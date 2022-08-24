@@ -25,7 +25,7 @@ public class Posts {
     @Column(name = "content", nullable = false)
     private String content;
 
-    @JoinColumn(name = "memberId")
+    @JoinColumn(name = "memberId",nullable = false)
     @ManyToOne(fetch = FetchType.EAGER) //N+1문제 발생을 막기위해 추가했습니다.
     private Member member;
 

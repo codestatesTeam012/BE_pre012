@@ -33,8 +33,10 @@ public class PostsService {
     }
     //posts 수정
     public Posts updatePosts(Posts posts,Long postsId ,Long memberId) {
-        verifiedMember(memberId); //member 확인
-        Posts findPosts = findByPostId(postsId); //post 식별
+//        verifiedMember(memberId); //member 확인
+//        Posts findPosts = findByPostId(postsId); //post 식별
+        Optional<Posts> post = postsRepository.find(postsId,memberId); //post 식별
+        Posts findPosts = post.orElseThrow(() -> new RuntimeException("???????"));
 
         Optional.ofNullable(posts.getTitle()).ifPresent(title -> findPosts.setTitle(title));
         Optional.ofNullable(posts.getContent()).ifPresent(content -> findPosts.setContent(content));
