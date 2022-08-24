@@ -46,4 +46,11 @@ public class MemberService {
 
         return member;
     }
+
+    public Member findMember(Long memberId) {
+        Optional<Member> member = memberRepository.findById(memberId);
+        Member findMember = member.orElseThrow(() ->new RuntimeException("member not exist"));
+        return findMember;
+    }
+
 }
