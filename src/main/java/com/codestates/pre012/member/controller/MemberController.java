@@ -35,7 +35,11 @@ public class MemberController {
 
     @PostMapping("/login")
     public ResponseEntity loginMember(@RequestBody LoginMemberDto loginMemberDto) {
-        return new ResponseEntity<>(HttpStatus.OK);
+        System.out.println("# loginMemberDto email : "+loginMemberDto.getEmail());
+        Member member = memberService.login(loginMemberDto);
+        System.out.println("# member email : "+ member.getEmail());
+
+        return new ResponseEntity<>("로그인 성공!!",HttpStatus.OK);
     }
 
 
