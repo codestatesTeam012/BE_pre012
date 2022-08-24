@@ -49,7 +49,7 @@ public class PostsService {
     }
 
     //나열 방법을 선택하면 선택한 방법의 순서대로 나열된 페이지 리턴
-    public Page<Posts> findAllPosts(int page, int size, OrderBy orderBy){
+    public Page<Posts> findAllPosts(int page, int size, OrderBy orderBy){//정렬 방법(OLD/NEWEST/ALPHABETICAL)
         Pageable pageable;
 
         if(orderBy == OrderBy.OLD) {
@@ -63,7 +63,7 @@ public class PostsService {
         Page<Posts> postsPage = postsRepository.findAll(pageable);
         return postsPage;
     }
-    //posts 생성
+    //posts 삭제
     public void deletePosts(Long postId) {
         findByPostId(postId);
 
@@ -71,7 +71,7 @@ public class PostsService {
         postsRepository.delete(posts);
     }
 
-    private Member verifiedMember(Long memberId) {
+    private Member verifiedMember(Long memberId) { //member 식별을 위해 추가
         Optional<Member> verifiedMember = memberRepository.findById(memberId);
         Member member = verifiedMember.orElseThrow(() ->new RuntimeException("please login"));
         return member;

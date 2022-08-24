@@ -1,8 +1,9 @@
 package com.codestates.pre012.member.dto;
 
+
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+
 
 
 @Getter

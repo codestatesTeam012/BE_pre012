@@ -33,6 +33,7 @@ public class PostsController {
     public ResponseEntity createPosts(@RequestBody PostPostsDto postPostsDto) {
         Posts posts = mapper.postPostsDtoToPosts(postPostsDto);
         Posts createPosts = postsService.savedPosts(posts, postPostsDto.getMemberId());
+        //member 식별을 위해 postservice에 memberId 멤버변수로 추가
 
         return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToResponsePostsDto(createPosts),"post created"), HttpStatus.CREATED);
     }
@@ -43,6 +44,8 @@ public class PostsController {
         Posts posts = mapper.patchPostsDtoToPosts(patchPostsDto);
 
         Posts updatePosts = postsService.updatePosts(posts, postsId, patchPostsDto.getMemberId());
+        //posts, member 식별을 위해 postservice에 postsId, memberId 멤버변수로 추가
+
         return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToResponsePostsDto(updatePosts),"post updated"),HttpStatus.OK);
     }
 
@@ -55,7 +58,7 @@ public class PostsController {
     @GetMapping("/question_view")
     public ResponseEntity questionList(@RequestParam int page,
                                        @RequestParam int size,
-                                       @RequestParam OrderBy orderBy) {
+                                       @RequestParam OrderBy orderBy) { //정렬방법(OLD/NEWEST/ALPHABETICAL)
         System.out.println(orderBy.name());
         Page<Posts> postsPage = postsService.findAllPosts(page, size, orderBy);
         List<Posts> postsList = postsPage.toList();
