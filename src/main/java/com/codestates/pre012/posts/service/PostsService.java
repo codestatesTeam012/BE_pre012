@@ -27,6 +27,8 @@ public class PostsService {
     public Posts savedPosts(Posts postsPost) {
 
         return postsRepository.save(postsPost);
+
+
     }
 
 

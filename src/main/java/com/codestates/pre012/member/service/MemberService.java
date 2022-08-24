@@ -3,6 +3,7 @@ package com.codestates.pre012.member.service;
 import com.codestates.pre012.member.dto.MemberDto;
 import com.codestates.pre012.member.entity.Member;
 import com.codestates.pre012.member.repository.MemberRepository;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -24,17 +25,30 @@ public class MemberService {
 
 
     }
-    public Member login(MemberDto.Login loginMemberDto) {
+    public Member login(Member member) {
 
-        Member member = loginVerifiedEmail(loginMemberDto.getEmail());
+        Member member1 = loginVerifiedEmail(member.getEmail());
 
-        if(member.getPassword().equals(loginMemberDto.getPassword())) {
+        if(member1.getPassword().equals(member.getPassword())) {
+            member.setMemberId(member1.getMemberId());
             return member;
         }
         else {
             throw new RuntimeException("wrong password!!");
         }
     }
+
+    public Member findMember (long memberId) {
+        return null;
+    }
+
+    public Page<Member> findMembers(int page, int size) {
+        return null;
+    }
+
+    public void deleteMember(long memberId) {
+    }
+
 
 
     //이메일 존재시 예외처리

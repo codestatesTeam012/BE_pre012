@@ -16,12 +16,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/posts")
-public class postsController {
+public class PostsController {
 
     private final PostsService postsService;
     private final PostsMapper mapper;
 
-    public postsController(PostsService postsService, PostsMapper mapper) {
+    public PostsController(PostsService postsService, PostsMapper mapper) {
         this.postsService = postsService;
         this.mapper = mapper;
     }
@@ -34,6 +34,8 @@ public class postsController {
 
         Posts findPosts = mapper.postsPostDtoToPosts(posts);
         Posts response = postsService.savedPosts(findPosts);
+
+
 
         return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToPostsDtoResponse(response)), HttpStatus.CREATED);
     }
@@ -77,9 +79,9 @@ public class postsController {
 
 
     @DeleteMapping("/{posts-Id}")
-    public ResponseEntity deletePost(@PathVariable("posts-Id") Long postsId) {
+    public ResponseEntity deletePost(@PathVariable("posts-Id") Long postId) {
 
-        postsService.deletePosts(postsId);
+        postsService.deletePosts(postId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

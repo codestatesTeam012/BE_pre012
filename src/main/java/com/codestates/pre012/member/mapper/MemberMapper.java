@@ -9,6 +9,7 @@ import org.mapstruct.ReportingPolicy;
 public interface MemberMapper {
 
     Member memberPostDtoToMember(MemberDto.Post requestBody);
+    Member memberLoginDtoToMember(MemberDto.Login requestBody);
 
     MemberDto.Response memberToMemberResponseDto(Member member);
 

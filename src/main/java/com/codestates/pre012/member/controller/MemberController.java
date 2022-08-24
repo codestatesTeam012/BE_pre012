@@ -5,7 +5,6 @@ import com.codestates.pre012.member.dto.MemberDto;
 import com.codestates.pre012.member.entity.Member;
 import com.codestates.pre012.member.mapper.MemberMapper;
 import com.codestates.pre012.member.service.MemberService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,18 +31,20 @@ public class MemberController {
     public ResponseEntity join(@RequestBody MemberDto.Post postMember) {
 
         Member member = mapper.memberPostDtoToMember(postMember);
-        memberService.savedMember(member);
+        Member createdMember = memberService.savedMember(member);
 
-        return new ResponseEntity<>(new SingleResponseDto<>("회원가입 성공") ,HttpStatus.CREATED);
+        return new ResponseEntity<>(new SingleResponseDto<>(mapper.memberToMemberResponseDto(member)) ,HttpStatus.CREATED);
     }
 
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody MemberDto.Login loginMember) {
 
-        memberService.login(loginMember);
 
-        return new ResponseEntity<>(new SingleResponseDto<>("로그인 성공"),HttpStatus.OK);
+        Member member = mapper.memberLoginDtoToMember(loginMember);
+        Member loginMembers = memberService.login(member);
+
+        return new ResponseEntity<>(new SingleResponseDto<>(mapper.memberToMemberResponseDto(loginMembers)),HttpStatus.OK);
     }
 
 
