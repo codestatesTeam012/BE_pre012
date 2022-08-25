@@ -73,7 +73,7 @@ include::{snippets}/patch-posts/http-request.adoc[]
 include::{snippets}/patch-posts/request-fields.adoc[]
 
 .path-parameters
-include::{snippets}/patch-posts/path-parameters.adoc[]
+//include::{snippets}/patch-posts/path-parameters.adoc[]
 
 .http-response
 include::{snippets}/patch-posts/http-response.adoc[]

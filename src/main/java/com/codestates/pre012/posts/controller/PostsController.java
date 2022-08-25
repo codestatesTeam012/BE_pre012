@@ -10,7 +10,6 @@ import com.codestates.pre012.posts.service.PostsService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,18 +26,23 @@ public class PostsController {
         this.mapper = mapper;
     }
 
+    /**
+     * 글 관리 ( 글 작성 / 글 수정 /특정 글 조회 / 전체 글 목록 / 글 삭제 )
+     */
     @PostMapping("/board")
-    public ResponseEntity createPosts(@Validated @RequestBody PostsDto.Post posts) {
+    public ResponseEntity createPosts(@RequestBody PostsDto.Post posts) {
 
-        Posts response = postsService.savedPosts(mapper.postsPostDtoToPosts(posts));
+        Posts findPosts = mapper.postsPostDtoToPosts(posts);
+        Posts response = postsService.savedPosts(findPosts);
 
         return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToPostsDtoResponse(response)), HttpStatus.CREATED);
     }
 
 
     @PatchMapping("/patch")
-    public ResponseEntity patchPosts(@Validated @RequestBody PostsDto.Patch posts) {
+    public ResponseEntity patchPosts(@RequestBody PostsDto.Patch posts) {
 
+        posts.setPostsId(posts.getPostsId());
         Posts response = postsService.updatePosts(mapper.postsPatchDtoToPosts(posts));
 
         return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToPostsDtoResponse(response)), HttpStatus.OK);
@@ -47,7 +51,8 @@ public class PostsController {
     @GetMapping("/{posts-id}")
     public ResponseEntity viewPosts(@PathVariable("posts-id") Long postId) {
 
-        Posts response = postsService.lookPost(postId);
+        Posts response = postsService.lookPosts(postId);
+
 
         return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToPostsDtoResponse(response)), HttpStatus.OK);
     }
@@ -58,10 +63,11 @@ public class PostsController {
 
         Page<Posts> pagePosts = postsService.findAllPosts(page - 1, size);
 
-        List<Posts> response = pagePosts.getContent();
+        List<Posts> posts = pagePosts.getContent();
 
         return new ResponseEntity<>(
-                new MultiResponseDto<>(mapper.postsToPostsDtoResponses(response), pagePosts), HttpStatus.OK);
+                new MultiResponseDto<>(mapper.postsToPostsDtoResponses(posts), pagePosts),
+                HttpStatus.OK);
     }
 
 

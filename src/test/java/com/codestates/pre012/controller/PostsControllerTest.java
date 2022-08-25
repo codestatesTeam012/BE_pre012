@@ -155,7 +155,7 @@ class PostsControllerTest {
         long postsId = 1L;
         PostsDto.Response response = new PostsDto.Response(1L,"title1", "contents");
 
-        given(postsService.lookPost(Mockito.anyLong())).willReturn(new Posts());
+        given(postsService.lookPosts(Mockito.anyLong())).willReturn(new Posts());
         given(mapper.postsToPostsDtoResponse(Mockito.any(Posts.class))).willReturn(response);
 
         // when
