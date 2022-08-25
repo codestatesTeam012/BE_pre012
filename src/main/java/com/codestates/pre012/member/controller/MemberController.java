@@ -22,20 +22,24 @@ public class MemberController {
         this.mapper = mapper;
     }
 
-    @PostMapping("/join")
+    @PostMapping("/create")
     public ResponseEntity createMember(@RequestBody PostMemberDto postMemberDto) {
         System.out.println(postMemberDto.getEmail() + " : "+postMemberDto.getPassword());
         Member member = mapper.PostMemberDtoToMember(postMemberDto);
         System.out.println(member.getEmail() + " : "+member.getPassword());
 
-        memberService.savedMember(member);
+        memberService.saveMember(member);
 
         return new ResponseEntity<>("회원가입 성공!",HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
     public ResponseEntity loginMember(@RequestBody LoginMemberDto loginMemberDto) {
-        return new ResponseEntity<>(HttpStatus.OK);
+        System.out.println("# loginMemberDto email : "+loginMemberDto.getEmail());
+        Member member = memberService.login(loginMemberDto);
+        System.out.println("# member email : "+ member.getEmail());
+
+        return new ResponseEntity<>("로그인 성공!!",HttpStatus.OK);
     }
 
 

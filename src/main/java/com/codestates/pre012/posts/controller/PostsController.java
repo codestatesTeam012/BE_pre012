@@ -1,8 +1,78 @@
 package com.codestates.pre012.posts.controller;
 
-import org.springframework.web.bind.annotation.RestController;
+import com.codestates.pre012.dto.MultiResponseDto;
+import com.codestates.pre012.dto.SingleResponseDto;
+import com.codestates.pre012.member.service.MemberService;
+import com.codestates.pre012.posts.OrderBy;
+import com.codestates.pre012.posts.dto.PatchPostsDto;
+import com.codestates.pre012.posts.dto.PostPostsDto;
+import com.codestates.pre012.posts.entity.Posts;
+import com.codestates.pre012.posts.mapper.PostsMapper;
+import com.codestates.pre012.posts.service.PostsService;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+@RequestMapping("/v1/post")
 @RestController
 public class PostsController {
 
+    private final PostsService postsService;
+
+
+    private final PostsMapper mapper;
+
+    public PostsController(PostsService postsService, PostsMapper mapper) {
+        this.postsService = postsService;
+        this.mapper = mapper;
+    }
+    @PostMapping("/create")
+    public ResponseEntity createPosts(@RequestBody PostPostsDto postPostsDto) {
+        System.out.println("===========create==========");
+        Posts posts = mapper.postPostsDtoToPosts(postPostsDto);
+
+        Posts createPosts = postsService.savePosts(posts, postPostsDto.getMemberId());
+        //member 식별을 위해 postservice에 memberId 멤버변수로 추가
+
+        return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToResponsePostsDto(createPosts),"post created"), HttpStatus.CREATED);
+    }
+
+    @PatchMapping("/patch")
+    public ResponseEntity patchPosts(@RequestBody PatchPostsDto patchPostsDto) {
+        System.out.println("============update==========");
+        Posts posts = mapper.patchPostsDtoToPosts(patchPostsDto);
+
+        Posts updatePosts = postsService.updatePosts(posts, patchPostsDto.getPostId(), patchPostsDto.getMemberId());
+        //posts, member 식별을 위해 postservice에 postsId, memberId 멤버변수로 추가
+
+        return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToResponsePostsDto(updatePosts),"post updated"),HttpStatus.OK);
+    }
+
+    @GetMapping("/{posts-id}")
+    public ResponseEntity viewPosts(@PathVariable("posts-id") Long postsId) {
+        System.out.println("=========posts_view============");
+        Posts posts = postsService.lookPosts(postsId);
+        return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToResponsePostsDto(posts)),HttpStatus.OK);
+    }
+
+    @GetMapping("/question_view")
+    public ResponseEntity findPosts(@RequestParam int page,
+                                       @RequestParam int size,
+                                       @RequestParam(required = false) OrderBy orderBy) { //정렬방법(OLD/NEWEST/ALPHABETICAL)
+        System.out.println("=========question_view=========");
+        Page<Posts> postsPage = postsService.findAllPosts(page, size, orderBy);
+        List<Posts> postsList = postsPage.toList();
+
+        return new ResponseEntity<>(new MultiResponseDto<>(mapper.postsToResponsePostsDto(postsList), postsPage),HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{posts-id}")
+    public ResponseEntity deletePosts(@PathVariable("posts-id")Long postsId) {
+        postsService.deletePosts(postsId);
+
+        return new ResponseEntity<>("posts deleted",HttpStatus.NO_CONTENT);
+    }
 }

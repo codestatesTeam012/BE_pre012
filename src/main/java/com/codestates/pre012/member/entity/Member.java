@@ -9,7 +9,6 @@ import java.util.List;
 @Setter
 @Getter
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
 public class Member {
 
@@ -25,6 +24,14 @@ public class Member {
 
     @OneToMany(mappedBy = "member")
     private List<Posts> posts;
+
+    //추가
+    public void addPosts(Posts post) {
+        posts.add(post);
+        if(post.getMember() != this) {
+            post.setMember(this);
+        }
+    }
 
     /*
     * @JOIN~~~~

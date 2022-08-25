@@ -17,7 +17,7 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
     //member 회원가입
-    public Member savedMember(Member member) {
+    public Member saveMember(Member member) {
         System.out.println(member.getEmail() +"/"+ member.getPassword());
         verifiedMemberEmail(member.getEmail());
 
@@ -46,4 +46,11 @@ public class MemberService {
 
         return member;
     }
+
+    public Member findMember(Long memberId) {
+        Optional<Member> member = memberRepository.findById(memberId);
+        Member findMember = member.orElseThrow(() ->new RuntimeException("member not exist"));
+        return findMember;
+    }
+
 }
