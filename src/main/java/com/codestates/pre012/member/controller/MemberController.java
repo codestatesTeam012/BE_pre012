@@ -22,13 +22,13 @@ public class MemberController {
         this.mapper = mapper;
     }
 
-    @PostMapping("/join")
+    @PostMapping("/create")
     public ResponseEntity createMember(@RequestBody PostMemberDto postMemberDto) {
         System.out.println(postMemberDto.getEmail() + " : "+postMemberDto.getPassword());
         Member member = mapper.PostMemberDtoToMember(postMemberDto);
         System.out.println(member.getEmail() + " : "+member.getPassword());
 
-        memberService.savedMember(member);
+        memberService.saveMember(member);
 
         return new ResponseEntity<>("회원가입 성공!",HttpStatus.CREATED);
     }

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("/v1/posts")
+@RequestMapping("/v1/post")
 @RestController
 public class PostsController {
 
@@ -29,40 +29,39 @@ public class PostsController {
         this.postsService = postsService;
         this.mapper = mapper;
     }
-    @PostMapping("/posts")
+    @PostMapping("/create")
     public ResponseEntity createPosts(@RequestBody PostPostsDto postPostsDto) {
         System.out.println("===========create==========");
         Posts posts = mapper.postPostsDtoToPosts(postPostsDto);
 
-        Posts createPosts = postsService.savedPosts(posts, postPostsDto.getMemberId());
+        Posts createPosts = postsService.savePosts(posts, postPostsDto.getMemberId());
         //member 식별을 위해 postservice에 memberId 멤버변수로 추가
 
         return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToResponsePostsDto(createPosts),"post created"), HttpStatus.CREATED);
     }
 
-    @PatchMapping("/update/{posts-id}")
-    public ResponseEntity updatePosts(@PathVariable("posts-id")Long postsId,
-                                      @RequestBody PatchPostsDto patchPostsDto) {
+    @PatchMapping("/patch")
+    public ResponseEntity patchPosts(@RequestBody PatchPostsDto patchPostsDto) {
         System.out.println("============update==========");
         Posts posts = mapper.patchPostsDtoToPosts(patchPostsDto);
 
-        Posts updatePosts = postsService.updatePosts(posts, postsId, patchPostsDto.getMemberId());
+        Posts updatePosts = postsService.updatePosts(posts, patchPostsDto.getPostId(), patchPostsDto.getMemberId());
         //posts, member 식별을 위해 postservice에 postsId, memberId 멤버변수로 추가
 
         return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToResponsePostsDto(updatePosts),"post updated"),HttpStatus.OK);
     }
 
-    @GetMapping("/posts_view/{posts-id}")
+    @GetMapping("/{posts-id}")
     public ResponseEntity viewPosts(@PathVariable("posts-id") Long postsId) {
         System.out.println("=========posts_view============");
-        Posts posts = postsService.findByPostId(postsId);
+        Posts posts = postsService.lookPosts(postsId);
         return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToResponsePostsDto(posts)),HttpStatus.OK);
     }
 
     @GetMapping("/question_view")
-    public ResponseEntity questionList(@RequestParam int page,
+    public ResponseEntity findPosts(@RequestParam int page,
                                        @RequestParam int size,
-                                       @RequestParam OrderBy orderBy) { //정렬방법(OLD/NEWEST/ALPHABETICAL)
+                                       @RequestParam(required = false,defaultValue = OrderBy.ALPHABETICAL) OrderBy orderBy) { //정렬방법(OLD/NEWEST/ALPHABETICAL)
         System.out.println("=========question_view=========");
         Page<Posts> postsPage = postsService.findAllPosts(page, size, orderBy);
         List<Posts> postsList = postsPage.toList();
@@ -70,7 +69,7 @@ public class PostsController {
         return new ResponseEntity<>(new MultiResponseDto<>(mapper.postsToResponsePostsDto(postsList), postsPage),HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/delete/{posts-id}")
+    @DeleteMapping("/{posts-id}")
     public ResponseEntity deletePosts(@PathVariable("posts-id")Long postsId) {
         postsService.deletePosts(postsId);
 

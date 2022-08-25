@@ -24,7 +24,7 @@ public class PostsService {
         this.memberRepository = memberRepository;
     }
     //posts 생성
-    public Posts savedPosts(Posts posts, Long memberId) {
+    public Posts savePosts(Posts posts, Long memberId) {
         System.out.println(posts.getPostId());
         Member member = verifiedMember(memberId); //member 확인
         posts.setMember(member);
@@ -44,7 +44,7 @@ public class PostsService {
         return postsRepository.save(findPosts);
     }
     //posts 조회
-    public Posts findByPostId(Long postId) {
+    public Posts lookPosts(Long postId) {
         Optional<Posts> findPosts = postsRepository.findById(postId);
 
         return findPosts.orElseThrow(() -> new RuntimeException("존재하지 않는 게시물입니다."));
@@ -67,9 +67,9 @@ public class PostsService {
     }
     //posts 삭제
     public void deletePosts(Long postId) {
-        findByPostId(postId);
+        lookPosts(postId);
 
-        Posts posts = findByPostId(postId);
+        Posts posts = lookPosts(postId);
         postsRepository.delete(posts);
     }
 
