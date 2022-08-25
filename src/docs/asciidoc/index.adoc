@@ -1,0 +1,127 @@
+= PreProject
+:sectnums:
+:toc: left
+:toclevels: 4
+:toc-title: Table of Contents
+:source-highlighter: prettify
+
+BE_PRE_012
+
+v1.0.0, 2022.08.24
+
+'''
+API 문서 개요
+
+이 문서는 39기 코드스테이츠 BE_PRE_012 팀의 첫 PreProject 입니다.
+
+CAUTION: 일부 오타가 있을 수 있음
+
+'''
+== MemberController
+=== 회원 등록
+.http-request
+include::{snippets}/post-JoinMember/http-request.adoc[]
+
+.request-fields
+include::{snippets}/post-JoinMember/request-fields.adoc[]
+
+.http-response
+include::{snippets}/post-JoinMember/http-response.adoc[]
+
+.response-fields
+include::{snippets}/post-JoinMember/response-fields.adoc[]
+
+
+=== 로그인
+
+.http-request
+include::{snippets}/post-loginMember/http-request.adoc[]
+
+.request-fields
+include::{snippets}/post-loginMember/request-fields.adoc[]
+
+.http-response
+include::{snippets}/post-loginMember/http-response.adoc[]
+
+.response-fields
+include::{snippets}/post-loginMember/response-fields.adoc[]
+
+'''
+== PostsController
+=== 포스트 등록
+
+.http-request
+include::{snippets}/post-posts/http-request.adoc[]
+
+.request-fields
+include::{snippets}/post-posts/request-fields.adoc[]
+
+.http-response
+include::{snippets}/post-posts/http-response.adoc[]
+
+.response-fields
+include::{snippets}/post-posts/response-fields.adoc[]
+
+'''
+
+=== 포스트 글 수정
+
+.http-request
+include::{snippets}/patch-posts/http-request.adoc[]
+
+.request-fields
+include::{snippets}/patch-posts/request-fields.adoc[]
+
+.path-parameters
+include::{snippets}/patch-posts/path-parameters.adoc[]
+
+.http-response
+include::{snippets}/patch-posts/http-response.adoc[]
+
+.response-fields
+include::{snippets}/patch-posts/response-fields.adoc[]
+'''
+=== 특정 포스트 글 조회
+
+.http-request
+include::{snippets}/get-posts/http-request.adoc[]
+
+.path-parameters
+include::{snippets}/get-posts/path-parameters.adoc[]
+
+.http-response
+include::{snippets}/get-posts/http-response.adoc[]
+
+.response-fields
+include::{snippets}/get-posts/response-fields.adoc[]
+
+'''
+=== 전체 포스트 글 조회
+
+.http-request
+include::{snippets}/gets-posts/http-request.adoc[]
+
+.request-parameters
+include::{snippets}/gets-posts/request-parameters.adoc[]
+
+.http-response
+include::{snippets}/gets-posts/http-response.adoc[]
+
+.response-fields
+include::{snippets}/gets-posts/response-fields.adoc[]
+'''
+
+=== 특정 포스트 삭제
+
+.http-request
+include::{snippets}/delete-Posts/http-request.adoc[]
+
+.path-parameters
+include::{snippets}/delete-Posts/path-parameters.adoc[]
+
+.http-response
+include::{snippets}/delete-Posts/http-response.adoc[]
+
+
+'''
+image::https://spring.io/images/spring-logo-9146a4d3298760c2e7e49595184e1975.svg[spring]
