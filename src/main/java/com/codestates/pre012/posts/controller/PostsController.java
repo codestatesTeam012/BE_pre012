@@ -61,7 +61,7 @@ public class PostsController {
     @GetMapping("/question_view")
     public ResponseEntity findPosts(@RequestParam int page,
                                        @RequestParam int size,
-                                       @RequestParam(required = false,defaultValue = OrderBy.ALPHABETICAL) OrderBy orderBy) { //정렬방법(OLD/NEWEST/ALPHABETICAL)
+                                       @RequestParam(required = false) OrderBy orderBy) { //정렬방법(OLD/NEWEST/ALPHABETICAL)
         System.out.println("=========question_view=========");
         Page<Posts> postsPage = postsService.findAllPosts(page, size, orderBy);
         List<Posts> postsList = postsPage.toList();
