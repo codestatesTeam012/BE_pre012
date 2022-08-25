@@ -15,15 +15,26 @@ import java.util.Optional;
 public class PostsService {
 
     private final PostsRepository postsRepository;
+
     public PostsService(PostsRepository postsRepository) {
         this.postsRepository = postsRepository;
     }
 
+
+    /**
+     * 새로운 글 등록
+     */
     public Posts savedPosts(Posts postsPost) {
 
         return postsRepository.save(postsPost);
+
+
     }
 
+
+    /**
+     * 글 수정
+     */
     public Posts updatePosts(Posts patchPost) {
 
         Posts findPosts = existPosts(patchPost.getPostsId());
@@ -36,19 +47,25 @@ public class PostsService {
         return postsRepository.save(findPosts);
     }
 
-
-    public Posts lookPost(long postId) {
+    /**
+     * 특정 글 조회
+     */
+    public Posts lookPosts(long postId) {
 
         return existPosts(postId);
     }
 
-
+    /**
+     * 전체 글 조회
+     */
     public Page<Posts> findAllPosts(int page, int size) {
-
         return postsRepository.findAll(PageRequest.of(page,size, Sort.by("postsId").descending()));
     }
 
 
+    /**
+     * 특정 글 삭제
+     */
     public void deletePosts(long postId) {
 
         Posts findPosts = existPosts(postId);
@@ -57,6 +74,9 @@ public class PostsService {
     }
 
 
+    /**
+     * PostId 존재하지 않을 경우 Exception
+     */
     private Posts existPosts(long postsId) {
 
         Optional<Posts> existPosts = postsRepository.findById(postsId);

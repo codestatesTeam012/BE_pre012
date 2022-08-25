@@ -27,14 +27,13 @@ public class MemberController {
     /**
      * 회원 관리 ( 회원 가입, 로그인 )
      */
-    @PostMapping("/create")
-    public ResponseEntity createMember(@RequestBody MemberDto.Post postMember) {
+    @PostMapping("/join")
+    public ResponseEntity join(@RequestBody MemberDto.Post postMember) {
 
         Member member = mapper.memberPostDtoToMember(postMember);
-        Member response = memberService.saveMember(member);
+        Member createdMember = memberService.saveMember(member);
 
-        return new ResponseEntity<>(new SingleResponseDto<>
-                (mapper.memberToMemberResponseDto(member)) ,HttpStatus.CREATED);
+        return new ResponseEntity<>(new SingleResponseDto<>(mapper.memberToMemberResponseDto(member)) ,HttpStatus.CREATED);
     }
 
 
@@ -43,10 +42,9 @@ public class MemberController {
 
 
         Member member = mapper.memberLoginDtoToMember(loginMember);
-        Member response = memberService.login(member);
+        Member loginMembers = memberService.login(member);
 
-        return new ResponseEntity<>(new SingleResponseDto<>
-                (mapper.memberToMemberResponseDto(response)),HttpStatus.OK);
+        return new ResponseEntity<>(new SingleResponseDto<>(mapper.memberToMemberResponseDto(loginMembers)),HttpStatus.OK);
     }
 
 
