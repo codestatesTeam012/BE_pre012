@@ -21,6 +21,7 @@ public class Posts {
     @Column(name = "title", nullable = false)
     private String title;
 
+
     @Lob //긴 문자열 저장을 위해 추가했습니다.
     @Column(name = "content", nullable = false)
     private String content;
