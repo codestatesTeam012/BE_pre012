@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/v1/member")
 public class MemberController {
@@ -28,7 +30,7 @@ public class MemberController {
      * 회원 관리 ( 회원 가입, 로그인 )
      */
     @PostMapping("/join")
-    public ResponseEntity join(@RequestBody MemberDto.Post postMember) {
+    public ResponseEntity join(@RequestBody @Valid MemberDto.Post postMember) {
         System.out.println("# email : "+postMember.getEmail());
         Member member = mapper.memberPostDtoToMember(postMember);
         System.out.println("# email : "+member.getEmail());
@@ -39,7 +41,7 @@ public class MemberController {
 
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody MemberDto.Login loginMember) {
+    public ResponseEntity login(@RequestBody @Valid MemberDto.Login loginMember) {
 
 
         Member member = mapper.memberLoginDtoToMember(loginMember);
