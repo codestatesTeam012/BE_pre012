@@ -7,13 +7,17 @@ import com.codestates.pre012.member.mapper.MemberMapper;
 import com.codestates.pre012.member.service.MemberService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/v1/member")
+@Validated
 public class MemberController {
 
     private final MemberService memberService;
@@ -28,7 +32,7 @@ public class MemberController {
      * 회원 관리 ( 회원 가입, 로그인 )
      */
     @PostMapping("/join")
-    public ResponseEntity join(@RequestBody MemberDto.Post postMember) {
+    public ResponseEntity join(@Valid @RequestBody MemberDto.Post postMember) {
 
         Member member = mapper.memberPostDtoToMember(postMember);
         Member createdMember = memberService.saveMember(member);
@@ -38,7 +42,7 @@ public class MemberController {
 
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody MemberDto.Login loginMember) {
+    public ResponseEntity login(@Valid @RequestBody MemberDto.Login loginMember) {
 
 
         Member member = mapper.memberLoginDtoToMember(loginMember);

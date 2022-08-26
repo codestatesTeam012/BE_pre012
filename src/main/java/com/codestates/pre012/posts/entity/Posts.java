@@ -22,6 +22,7 @@ public class Posts extends BaseEntity {
     private String title;
 
     @Column(name = "content", nullable = false)
+    @Lob
     private String content;
 
     @JoinColumn(name = "memberId")

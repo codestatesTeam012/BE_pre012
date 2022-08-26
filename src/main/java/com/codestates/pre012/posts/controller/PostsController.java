@@ -10,12 +10,16 @@ import com.codestates.pre012.posts.service.PostsService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 import java.util.List;
 
 @RestController
 @RequestMapping("/v1/posts")
+@Validated // queryParameter 유효성 검증에 필요
 public class PostsController {
 
     private final PostsService postsService;
@@ -29,8 +33,8 @@ public class PostsController {
     /**
      * 글 관리 ( 글 작성 / 글 수정 /특정 글 조회 / 전체 글 목록 / 글 삭제 )
      */
-    @PostMapping("/board")
-    public ResponseEntity createPosts(@RequestBody PostsDto.Post posts) {
+    @PostMapping("/create")
+    public ResponseEntity createPosts(@Valid @RequestBody PostsDto.Post posts) {
 
         Posts findPosts = mapper.postsPostDtoToPosts(posts);
         Posts response = postsService.savedPosts(findPosts);
@@ -40,7 +44,7 @@ public class PostsController {
 
 
     @PatchMapping("/patch")
-    public ResponseEntity patchPosts(@RequestBody PostsDto.Patch posts) {
+    public ResponseEntity patchPosts(@Valid @RequestBody PostsDto.Patch posts) {
 
         posts.setPostsId(posts.getPostsId());
         Posts response = postsService.updatePosts(mapper.postsPatchDtoToPosts(posts));
@@ -49,17 +53,16 @@ public class PostsController {
     }
 
     @GetMapping("/{posts-id}")
-    public ResponseEntity viewPosts(@PathVariable("posts-id") Long postId) {
+    public ResponseEntity viewPosts(@PathVariable("posts-id") @Positive Long postId) {
 
         Posts response = postsService.lookPosts(postId);
-
 
         return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToPostsDtoResponse(response)), HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity findPosts(@RequestParam int page,
-                                    @RequestParam int size) {
+    public ResponseEntity findPosts(@RequestParam @Positive int page,
+                                    @RequestParam @Positive int size) {
 
         Page<Posts> pagePosts = postsService.findAllPosts(page - 1, size);
 
@@ -72,10 +75,10 @@ public class PostsController {
 
 
     @DeleteMapping("/{posts-Id}")
-    public ResponseEntity deletePosts(@PathVariable("posts-Id") Long postId) {
+    public ResponseEntity deletePosts(@PathVariable("posts-Id") @Positive Long postId) {
 
         postsService.deletePosts(postId);
 
-        return new ResponseEntity<>("삭제 완료",HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>("삭제 완료", HttpStatus.NO_CONTENT);
     }
 }
