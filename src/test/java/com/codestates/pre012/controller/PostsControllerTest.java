@@ -68,7 +68,7 @@ class PostsControllerTest {
         // when
         ResultActions actions =
                 mockMvc.perform(
-                        RestDocumentationRequestBuilders.post("/v1/posts/board")
+                        RestDocumentationRequestBuilders.post("/v1/posts/create")
                                 .accept(MediaType.APPLICATION_JSON)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(content));

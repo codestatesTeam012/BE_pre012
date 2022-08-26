@@ -31,7 +31,7 @@ public class MemberController {
     /**
      * 회원 관리 ( 회원 가입, 로그인 )
      */
-    @PostMapping("/join")
+    @PostMapping("/create")
     public ResponseEntity join(@Valid @RequestBody MemberDto.Post postMember) {
 
         Member member = mapper.memberPostDtoToMember(postMember);

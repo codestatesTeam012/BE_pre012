@@ -48,7 +48,7 @@ class MemberControllerTest {
     void createMemberTest() throws Exception {
 
         // given
-        MemberDto.Post post = new MemberDto.Post("hgd@gmail.com","password");
+        MemberDto.Post post = new MemberDto.Post("hgd@gmail.com","password!12");
         String content = gson.toJson(post);
 
         MemberDto.Response responseBody = new MemberDto.Response(1L, "hgd@gmail.com");
@@ -69,7 +69,7 @@ class MemberControllerTest {
         actions
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.data.email").value(post.getEmail()))
-                .andDo(document("post-JoinMember",
+                .andDo(document("post-createMember",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         requestFields(
