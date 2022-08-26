@@ -29,8 +29,9 @@ public class MemberController {
      */
     @PostMapping("/join")
     public ResponseEntity join(@RequestBody MemberDto.Post postMember) {
-
+        System.out.println("# email : "+postMember.getEmail());
         Member member = mapper.memberPostDtoToMember(postMember);
+        System.out.println("# email : "+member.getEmail());
         Member createdMember = memberService.saveMember(member);
 
         return new ResponseEntity<>(new SingleResponseDto<>(mapper.memberToMemberResponseDto(member)) ,HttpStatus.CREATED);
