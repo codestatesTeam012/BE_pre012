@@ -502,15 +502,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="listingblock">
 <div class="title">http-request</div>
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code data-lang="http">POST /v1/member/join HTTP/1.1
+<pre class="prettyprint highlight nowrap"><code data-lang="http">POST /v1/member/create HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
-Content-Length: 58
+Content-Length: 64
 Host: localhost:8080
 
 {
   "email" : "hgd@gmail.com",
-  "password" : "password"
+  "password" : "password!12"
 }</code></pre>
 </div>
 </div>
@@ -545,8 +545,11 @@ Host: localhost:8080
 <div class="title">http-response</div>
 <div class="content">
 <pre class="prettyprint highlight nowrap"><code data-lang="http">HTTP/1.1 201 Created
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 70
+Content-Length: 75
 
 {
   "data" : {
@@ -597,7 +600,7 @@ Content-Length: 70
 <pre class="prettyprint highlight nowrap"><code data-lang="http">POST /v1/member/login HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
-Content-Length: 58
+Content-Length: 61
 Host: localhost:8080
 
 {
@@ -637,8 +640,11 @@ Host: localhost:8080
 <div class="title">http-response</div>
 <div class="content">
 <pre class="prettyprint highlight nowrap"><code data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 70
+Content-Length: 75
 
 {
   "data" : {
@@ -692,10 +698,10 @@ Content-Length: 70
 <div class="listingblock">
 <div class="title">http-request</div>
 <div class="content">
-<pre class="prettyprint highlight nowrap"><code data-lang="http">POST /v1/posts/board HTTP/1.1
+<pre class="prettyprint highlight nowrap"><code data-lang="http">POST /v1/posts/create HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
-Content-Length: 50
+Content-Length: 53
 Host: localhost:8080
 
 {
@@ -735,8 +741,11 @@ Host: localhost:8080
 <div class="title">http-response</div>
 <div class="content">
 <pre class="prettyprint highlight nowrap"><code data-lang="http">HTTP/1.1 201 Created
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 90
+Content-Length: 96
 
 {
   "data" : {
@@ -794,7 +803,7 @@ Content-Length: 90
 <pre class="prettyprint highlight nowrap"><code data-lang="http">PATCH /v1/posts/patch HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
-Content-Length: 67
+Content-Length: 71
 Host: localhost:8080
 
 {
@@ -840,8 +849,11 @@ Host: localhost:8080
 <div class="title">http-response</div>
 <div class="content">
 <pre class="prettyprint highlight nowrap"><code data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 90
+Content-Length: 96
 
 {
   "data" : {
@@ -924,8 +936,11 @@ Host: localhost:8080</code></pre>
 <div class="title">http-response</div>
 <div class="content">
 <pre class="prettyprint highlight nowrap"><code data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 90
+Content-Length: 96
 
 {
   "data" : {
@@ -1012,8 +1027,11 @@ Host: localhost:8080</code></pre>
 <div class="title">http-response</div>
 <div class="content">
 <pre class="prettyprint highlight nowrap"><code data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 274
+Content-Length: 290
 
 {
   "data" : [ {
@@ -1130,6 +1148,9 @@ Host: localhost:8080</code></pre>
 <div class="title">http-response</div>
 <div class="content">
 <pre class="prettyprint highlight nowrap"><code data-lang="http">HTTP/1.1 204 No Content
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
 Content-Type: text/plain;charset=UTF-8
 Content-Length: 13
 
@@ -1149,7 +1170,7 @@ Content-Length: 13
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-08-25 14:27:48 +0900
+Last updated 2022-08-26 14:34:05 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
