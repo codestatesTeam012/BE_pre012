@@ -1,24 +1,36 @@
 package com.codestates.pre012.member.service;
 
+import com.codestates.pre012.auth.PrincipalDetails;
 import com.codestates.pre012.member.entity.Member;
 import com.codestates.pre012.member.repository.MemberRepository;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
-public class MemberService {
+public class MemberService implements UserDetailsService{
 
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public MemberService(MemberRepository memberRepository) {
+    public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder) {
         this.memberRepository = memberRepository;
+        this.passwordEncoder = passwordEncoder;
     }
     //member 회원가입
     public Member saveMember(Member member) {
 
         verifiedMemberEmail(member.getEmail());
+        member.setRole(Member.Role.ROLE_USER);
 
         return memberRepository.save(member);
 
@@ -28,7 +40,7 @@ public class MemberService {
 
         Member member1 = loginVerifiedEmail(member.getEmail());
 
-        if(member1.getPassword().equals(member.getPassword())) {
+        if(passwordEncoder.matches(member.getPassword(), member1.getPassword())) {
             member.setMemberId(member1.getMemberId());
             return member;
         }
@@ -62,4 +74,12 @@ public class MemberService {
 
         return member;
     }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Member member = loginVerifiedEmail(email);
+        return new PrincipalDetails(member);
+    }
+
+
 }

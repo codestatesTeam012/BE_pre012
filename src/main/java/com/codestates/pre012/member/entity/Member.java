@@ -24,11 +24,22 @@ public class Member extends BaseEntity {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "password", nullable = false)
+    //@Column(name = "password", nullable = false)
     private String password;
 
     @OneToMany(mappedBy = "member")
     private List<Posts> posts;
+
+    @Enumerated(value = EnumType.STRING)
+    private Role role;
+
+    private String provider;
+
+    private String providerId;
+
+    public enum Role{
+        ROLE_USER, ROLE_MANAGER, ROLE_ADMIN;
+    }
 
 
 }
