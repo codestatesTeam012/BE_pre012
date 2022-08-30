@@ -56,6 +56,16 @@ dependencies {
 
 	// 유효성 검사 추가
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+
+	implementation 'org.springframework.boot:spring-boot-starter-mustache'
+	implementation 'com.auth0:java-jwt:3.19.2'
+
+	//slf4j & logback
+	implementation('org.slf4j:jcl-over-slf4j')
+	implementation('ch.qos.logback:logback-classic')
 }
 
 tasks.named('test') {

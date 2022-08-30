@@ -1,10 +1,12 @@
 package com.codestates.pre012.posts.dto;
 
 import lombok.*;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 
+@Validated
 public class PostsDto {
 
     @Getter
@@ -12,10 +14,10 @@ public class PostsDto {
     @NoArgsConstructor
     public static class Post {
 
-        @NotBlank
+        @NotBlank(message = "공백이 될 수 없습니다.")
         private String title;
 
-        @NotBlank
+        @NotBlank(message = "공백이 될 수 없습니다.")
         private String content;
 
     }
@@ -29,10 +31,10 @@ public class PostsDto {
         @Positive
         private long postsId;
 
-        @NotBlank
+        @NotBlank(message = "공백이 될 수 없습니다.")
         private String title;
 
-        @NotBlank
+        @NotBlank(message = "공백이 될 수 없습니다.")
         private String content;
 
     }
@@ -42,11 +44,8 @@ public class PostsDto {
     @AllArgsConstructor
     public static class Response {
 
-        @Positive
         private long postsId;
-        @NotBlank
         private String title;
-        @NotBlank
         private String content;
 
         public Response(String title, String content) {

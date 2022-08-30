@@ -13,10 +13,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 import java.util.List;
 
 @RestController
 @RequestMapping("/v1/posts")
+@Validated // queryParameter 유효성 검증에 필요
 public class PostsController {
 
     private final PostsService postsService;
@@ -27,49 +30,55 @@ public class PostsController {
         this.mapper = mapper;
     }
 
-    @PostMapping("/board")
-    public ResponseEntity createPosts(@Validated @RequestBody PostsDto.Post posts) {
+    /**
+     * 글 관리 ( 글 작성 / 글 수정 /특정 글 조회 / 전체 글 목록 / 글 삭제 )
+     */
+    @PostMapping("/create")
+    public ResponseEntity createPosts(@Valid @RequestBody PostsDto.Post posts) {
 
-        Posts response = postsService.savedPosts(mapper.postsPostDtoToPosts(posts));
+        Posts findPosts = mapper.postsPostDtoToPosts(posts);
+        Posts response = postsService.savedPosts(findPosts);
 
         return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToPostsDtoResponse(response)), HttpStatus.CREATED);
     }
 
 
     @PatchMapping("/patch")
-    public ResponseEntity patchPosts(@Validated @RequestBody PostsDto.Patch posts) {
+    public ResponseEntity patchPosts(@Valid @RequestBody PostsDto.Patch posts) {
 
+        posts.setPostsId(posts.getPostsId());
         Posts response = postsService.updatePosts(mapper.postsPatchDtoToPosts(posts));
 
         return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToPostsDtoResponse(response)), HttpStatus.OK);
     }
 
     @GetMapping("/{posts-id}")
-    public ResponseEntity viewPosts(@PathVariable("posts-id") Long postId) {
+    public ResponseEntity viewPosts(@PathVariable("posts-id") @Positive Long postId) {
 
-        Posts response = postsService.lookPost(postId);
+        Posts response = postsService.lookPosts(postId);
 
         return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToPostsDtoResponse(response)), HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity findPosts(@RequestParam int page,
-                                    @RequestParam int size) {
+    public ResponseEntity findPosts(@RequestParam @Positive int page,
+                                    @RequestParam @Positive int size) {
 
         Page<Posts> pagePosts = postsService.findAllPosts(page - 1, size);
 
-        List<Posts> response = pagePosts.getContent();
+        List<Posts> posts = pagePosts.getContent();
 
         return new ResponseEntity<>(
-                new MultiResponseDto<>(mapper.postsToPostsDtoResponses(response), pagePosts), HttpStatus.OK);
+                new MultiResponseDto<>(mapper.postsToPostsDtoResponses(posts), pagePosts),
+                HttpStatus.OK);
     }
 
 
     @DeleteMapping("/{posts-Id}")
-    public ResponseEntity deletePosts(@PathVariable("posts-Id") Long postId) {
+    public ResponseEntity deletePosts(@PathVariable("posts-Id") @Positive Long postId) {
 
         postsService.deletePosts(postId);
 
-        return new ResponseEntity<>("삭제 완료",HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>("삭제 완료", HttpStatus.NO_CONTENT);
     }
 }
