@@ -2,7 +2,10 @@ package com.codestates.pre012.config;
 
 import com.codestates.pre012.filter.JwtAuthenticationFilter;
 import com.codestates.pre012.member.service.MemberService;
-import com.codestates.pre012.oauth.PrincipalOauth2UserService;
+import com.codestates.pre012.oauth.CustomOAuth2UserService;
+import com.codestates.pre012.oauth.OAuth2SuccessHandler;
+//import com.codestates.pre012.oauth.CustomOAuth2UserService;
+//import com.codestates.pre012.oauth.OAuth2SuccessHandler;
 import com.codestates.pre012.provider.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -11,9 +14,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.filter.CorsFilter;
@@ -25,8 +26,8 @@ public class SecurityConfig {
 
     private final CorsFilter corsFilter;
     private final MemberService memberService;
-
-    private final PrincipalOauth2UserService principalOauth2UserService;
+    private final OAuth2SuccessHandler successHandler;
+    private final CustomOAuth2UserService customOAuth2UserService;
     private final JwtTokenProvider jwtTokenProvider;
 
 
@@ -38,17 +39,12 @@ public class SecurityConfig {
         http.headers().frameOptions().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .formLogin().disable()
-                .oauth2Login()
-                .redirectionEndpoint()
-                .baseUri("/v1/posts?page=0&size=10")
-                .and()
-                .userInfoEndpoint()
-                .userService(principalOauth2UserService);
+                .formLogin().disable();
+
         http
                 .httpBasic().disable()
                 .authorizeRequests()
-                .antMatchers("/v1/member/create", "/v1/member/login").permitAll()
+                .antMatchers("/v1/member/create", "/v1/member/login","/v1/member/google/login").permitAll()
                 .antMatchers(HttpMethod.GET,"/v1/posts/**").permitAll()
                 .antMatchers(HttpMethod.POST,"/v1/posts/create")
                 .access("hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
@@ -61,16 +57,18 @@ public class SecurityConfig {
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, memberService),
                         UsernamePasswordAuthenticationFilter.class);
 
+        http
+                .oauth2Login()
+                .defaultSuccessUrl("/v1/posts?page=1&size=10")
+                .successHandler(successHandler)
+                .userInfoEndpoint()
+                .userService(customOAuth2UserService);
+
+        http
+                .logout()
+                .logoutSuccessUrl("/v1/posts?page=1&size=10");
+
         return http.build();
     }
 
-//    public class CustomDsl extends AbstractHttpConfigurer<CustomDsl, HttpSecurity> {
-//        @Override
-//        public void configure(HttpSecurity http) throws Exception {
-//            AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
-//            http.addFilter(corsFilter)
-//                    .addFilter(new JwtAuthenticationFilter(authenticationManager))
-//                    .addFilter(new JwtAuthorizationFilter(authenticationManager, memberService));
-//        }
-//    }
 }

@@ -54,24 +54,18 @@ public class MemberController {
         Member member = mapper.memberLoginDtoToMember(loginMember);
 
         Member loginMembers = memberService.login(member);
-        String accessToken = jwtTokenProvider.createToken(loginMembers.getEmail(), loginMembers.getMemberId());
-        response.addHeader("Authorization","Bearer "+accessToken);
-        ResponseCookie cookie = ResponseCookie.from("accessToken", "Bearer "+accessToken)
-                .maxAge(7 * 24 * 60 * 60)
-                .path("/")
-                .secure(true)
-                .sameSite("None")
-                .httpOnly(true)
-                .build();
-        response.setHeader("Set-Cookie", cookie.toString());
+        String accessToken = jwtTokenProvider.createToken(loginMembers.getEmail(), response);
+
 
         return new ResponseEntity<>(mapper.memberToMemberResponseDto(loginMembers), HttpStatus.OK);
     }
 
+    //@PostMapping
+
     @PostMapping("/logout")
     public ResponseEntity logout(HttpServletResponse response) {
-        ResponseCookie cookie = ResponseCookie.from("accessToken", null)
-                .maxAge(7 * 24 * 60 * 60)
+        ResponseCookie cookie = ResponseCookie.from("cookie", null)
+                .maxAge(0)
                 .path("/")
                 .secure(false)
                 .httpOnly(true)

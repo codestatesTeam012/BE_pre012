@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class MemberService implements UserDetailsService{
+public class MemberService{
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
@@ -75,11 +75,7 @@ public class MemberService implements UserDetailsService{
         return member;
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Member member = loginVerifiedEmail(email);
-        return new PrincipalDetails(member);
-    }
+
 
 
 }
