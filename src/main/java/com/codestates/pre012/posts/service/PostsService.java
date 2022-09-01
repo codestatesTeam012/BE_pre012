@@ -54,7 +54,7 @@ public class PostsService {
     }
 
     //member 식별 이후 수정 가능하도록 멤버변수에 member 추가
-    public Posts updatePosts(Posts patchPost ,Member member) {
+    public Posts updatePosts(Posts patchPost ,Member member, List<String> tag) {
         Posts findPosts = existPosts(patchPost.getPostsId());
         if(!findPosts.getMember().equals(member)) throw new RuntimeException("자신의 글만 수정 가능합니다.");
 
@@ -62,6 +62,15 @@ public class PostsService {
                 .ifPresent(findPosts::setTitle);
         Optional.ofNullable(patchPost.getContent())
                 .ifPresent(findPosts::setContent);
+
+        //날로 쳐먹는 코딩
+        List<Tag> tagList = tagService.saveTag(tag);
+        List<Tag_Posts> tag_posts = new ArrayList<>();
+        for(int i = 0; i< tagList.size(); i++) {
+            tag_posts.add(tag_postsService.saveTagPost(tagList.get(i), patchPost));
+        }
+        findPosts.setTag_posts(tag_posts);
+
 
 
         return postsRepository.save(findPosts);
