@@ -8,12 +8,18 @@ import com.codestates.pre012.posts.repository.PostsRepository;
 
 import com.codestates.pre012.reply.repository.ReplyRepository;
 
+import com.codestates.pre012.tag.entity.Tag;
+import com.codestates.pre012.tag.entity.Tag_Posts;
+import com.codestates.pre012.tag.service.TagService;
+import com.codestates.pre012.tag.service.Tag_PostsService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,16 +29,27 @@ public class PostsService {
     private final PostsRepository postsRepository;
 
     private final ReplyRepository replyRepository;
+    private final Tag_PostsService tag_postsService;
+    private final TagService tagService;
 
-    public PostsService(PostsRepository postsRepository, ReplyRepository replyRepository) {
+    public PostsService(PostsRepository postsRepository, ReplyRepository replyRepository, Tag_PostsService tag_postsService, TagService tagService) {
         this.postsRepository = postsRepository;
         this.replyRepository = replyRepository;
+        this.tag_postsService = tag_postsService;
+        this.tagService = tagService;
     }
 
 
-    public Posts savedPosts(Posts postsPost, Member member) {
+    public Posts savedPosts(Posts postsPost, Member member, List<String> tag) {
+
 
         postsPost.setMember(member);
+        List<Tag> tagList = tagService.saveTag(tag);
+        List<Tag_Posts> tag_posts = new ArrayList<>();
+        for(int i = 0; i< tagList.size(); i++) {
+            tag_posts.add(tag_postsService.saveTagPost(tagList.get(i), postsPost));
+        }
+        postsPost.setTag_posts(tag_posts);
         return postsRepository.save(postsPost);
     }
 
@@ -45,6 +62,7 @@ public class PostsService {
                 .ifPresent(findPosts::setTitle);
         Optional.ofNullable(patchPost.getContent())
                 .ifPresent(findPosts::setContent);
+
 
         return postsRepository.save(findPosts);
     }

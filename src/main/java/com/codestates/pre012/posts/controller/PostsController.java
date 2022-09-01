@@ -39,7 +39,7 @@ public class PostsController {
 
         Member member = principal.getMember();
         Posts findPosts = mapper.postsPostDtoToPosts(posts);
-        Posts response = postsService.savedPosts(findPosts,member);
+        Posts response = postsService.savedPosts(findPosts,member,posts.getTagList());
 
         return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToPostsDtoResponse(response)), HttpStatus.CREATED);
     }

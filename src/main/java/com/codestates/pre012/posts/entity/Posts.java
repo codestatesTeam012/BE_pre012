@@ -4,6 +4,7 @@ package com.codestates.pre012.posts.entity;
 import com.codestates.pre012.baseEntity.BaseEntity;
 import com.codestates.pre012.member.entity.Member;
 import com.codestates.pre012.reply.entity.Reply;
+import com.codestates.pre012.tag.entity.Tag_Posts;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -59,6 +60,9 @@ public class Posts extends BaseEntity {
         List<String> list = Arrays.asList(tag.split(" , "));
         return list;
     }
+
+    @OneToMany(mappedBy = "posts", cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
+    private List<Tag_Posts> tag_posts;
 
 
 

@@ -3,11 +3,14 @@ package com.codestates.pre012.posts.dto;
 import com.codestates.pre012.reply.entity.Reply;
 import com.codestates.pre012.reply.dto.ReplyDto;
 
+import com.codestates.pre012.tag.dto.TagDto;
+import com.codestates.pre012.tag.entity.Tag;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PostsDto {
@@ -22,6 +25,8 @@ public class PostsDto {
 
         @NotBlank(message = "공백이 될 수 없습니다.")
         private String content;
+
+        private List<String> tagList;
 
     }
 
@@ -55,11 +60,13 @@ public class PostsDto {
         private int view;
 
         private List<ReplyDto.Response> replies;
+        private List<Tag.TagList> tagResponse;
 
-        public Response(String title, String content, List<ReplyDto.Response> replies) {
+        public Response(String title, String content, List<ReplyDto.Response> replies, List<Tag.TagList> tagResponse) {
             this.title = title;
             this.content = content;
             this.replies = replies;
+            this.tagResponse = tagResponse;
         }
 
     }

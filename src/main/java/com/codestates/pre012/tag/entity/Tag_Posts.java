@@ -1,6 +1,7 @@
 package com.codestates.pre012.tag.entity;
 
 import com.codestates.pre012.posts.entity.Posts;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,12 +12,13 @@ import javax.persistence.*;
 @Getter
 @Entity
 @Builder
+@AllArgsConstructor
 public class Tag_Posts {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long tag_postsId;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "tagId")
     private Tag tag;
 
@@ -27,4 +29,7 @@ public class Tag_Posts {
     private Posts posts;
 
     //setPosts()삭제
+
+
+
 }
