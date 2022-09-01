@@ -8,6 +8,7 @@ import com.codestates.pre012.posts.repository.PostsRepository;
 
 import com.codestates.pre012.reply.repository.ReplyRepository;
 
+import com.codestates.pre012.tag.dto.StringToTag;
 import com.codestates.pre012.tag.entity.Tag;
 import com.codestates.pre012.tag.entity.Tag_Posts;
 import com.codestates.pre012.tag.service.TagService;
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -63,14 +65,13 @@ public class PostsService {
         Optional.ofNullable(patchPost.getContent())
                 .ifPresent(findPosts::setContent);
 
-        //날로 쳐먹는 코딩
-        List<Tag> tagList = tagService.saveTag(tag);
+        //일단... 수정시 tag는 처음부터 다시 작성하는 방법으로 설정
+        StringToTag stringToTag = new StringToTag();
+        List<Tag> tagList = stringToTag.stringToTag(tag);
         List<Tag_Posts> tag_posts = new ArrayList<>();
         for(int i = 0; i< tagList.size(); i++) {
             tag_posts.add(tag_postsService.saveTagPost(tagList.get(i), patchPost));
         }
-        findPosts.setTag_posts(tag_posts);
-
 
 
         return postsRepository.save(findPosts);
