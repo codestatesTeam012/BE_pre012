@@ -2,11 +2,9 @@ package com.codestates.pre012.posts.dto;
 
 import com.codestates.pre012.member.dto.MemberDto;
 import com.codestates.pre012.reply.dto.ReplyDto;
-
+import com.codestates.pre012.tag.dto.TagDto;
 import lombok.*;
-
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Positive;
 
 import java.util.List;
 
@@ -22,6 +20,8 @@ public class PostsDto {
 
         @NotBlank(message = "공백이 될 수 없습니다.")
         private String content;
+
+        private List<String> tags;
     }
 
 
@@ -33,7 +33,11 @@ public class PostsDto {
         private long postsId;
         private String title;
         private String content;
+
+        private List<TagDto.Response> tags;
+
         private int view;
+
 
     }
 
@@ -46,7 +50,9 @@ public class PostsDto {
         private String title;
         private String content;
         private int view;
-        private MemberDto.Response member;
+        private String username;
+        private List<TagDto.Response> tags;
         private List<ReplyDto.Response> replies;
+
     }
 }

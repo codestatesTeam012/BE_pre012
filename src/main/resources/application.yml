@@ -10,7 +10,7 @@ spring:
 #    driver-class-name: com.mysql.cj.jdbc.Driver
 
 
-      url: jdbc:h2:mem:test  # h2
+    url: jdbc:h2:mem:test  # h2
 #  admin.cy6doy34twwm.ap-northeast-2.rds.amazonaws.com
 
   security:
@@ -66,6 +66,7 @@ logging:
       springframework:
         orm:
           jpa: DEBUG
+
 
 server:
   servlet:
