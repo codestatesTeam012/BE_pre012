@@ -32,8 +32,8 @@ public class ReplyDto {
     @NoArgsConstructor
     public static class Response {
 
-
-        private MemberDto.Response member;
+        private Long replyId;
+        private String username; // --> member 객체에서 뽑기
         private String content;
 
     }

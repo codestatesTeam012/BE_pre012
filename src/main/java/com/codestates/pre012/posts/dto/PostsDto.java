@@ -38,6 +38,7 @@ public class PostsDto {
 
         private int view;
 
+        private List<ReplyDto.Response> replies;
 
     }
 

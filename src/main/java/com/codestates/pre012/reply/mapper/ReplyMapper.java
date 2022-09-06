@@ -1,6 +1,8 @@
 package com.codestates.pre012.reply.mapper;
 
 
+import com.codestates.pre012.member.dto.MemberDto;
+import com.codestates.pre012.member.entity.Member;
 import com.codestates.pre012.reply.entity.Reply;
 import com.codestates.pre012.reply.dto.ReplyDto;
 import org.mapstruct.Mapper;
@@ -12,7 +14,18 @@ import java.util.List;
 public interface ReplyMapper {
 
     Reply ReplyPostDtoToReply(ReplyDto.Post replyDto);
+
     Reply ReplyPatchDtoToReply(ReplyDto.Patch replyDto);
-    ReplyDto.Response ReplyToReplyDtoResponse(Reply reply);
+
+    default ReplyDto.Response ReplyToReplyDtoResponse(Reply reply) {
+        ReplyDto.Response replyDto = ReplyDto.Response
+                .builder()
+                .username(reply.getMember().getUsername())
+                .content(reply.getContent())
+                .replyId(reply.getReplyId())
+                .build();
+
+        return replyDto;
+    }
 
 }

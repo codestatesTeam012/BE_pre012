@@ -80,6 +80,7 @@ public class PostsController {
                 .map(TagPosts::getTag).collect(Collectors.toList());
         String username = response.getMember().getUsername();
 
+
         return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToSearchResponse(response, tags, username)), HttpStatus.OK);
     }
 
