@@ -15,6 +15,7 @@ public class StringToTagDto {
     //string -> tagList
 
     public List<TagDto.Post> tagListToTagDtoResponse(List<String> tag) {
+        if(tag == null) return null;
         List<Tag.TagList> tagList = stringToTagList(tag);
         List<TagDto.Post> tagResponse = tagList.stream()
                 .map(t -> {

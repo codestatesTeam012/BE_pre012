@@ -58,15 +58,12 @@ public class PostsController {
                                      @Valid @RequestBody PostsDto.Post posts,
                                      @AuthenticationPrincipal PrincipalDetails principal) {
 
-
         Posts requestPosts = mapper.postsPostDtoToPosts(posts);
         List<TagDto.Post> responseList = stringToTagDto.tagListToTagDtoResponse(posts.getTags());
-
         List<Tag> tags = tagMapper.tagDtoPostToTags(responseList);
         Posts response = postsService.updatePosts(postsId ,requestPosts ,principal.getMember(),tags);
         List<Tag> tagList = response.getTagPosts().stream()
                 .map(TagPosts::getTag).collect(Collectors.toList());
-
 
         return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToPostsResponse(response, tagList)), HttpStatus.OK);
 
